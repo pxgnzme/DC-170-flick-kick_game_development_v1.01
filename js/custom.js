@@ -16,15 +16,50 @@ var mobile = false;
 
 var skyRatio = 394/2000;
 
+var myLoader = html5Preloader();
+
 //makeFullscreen();
 
 $(document).ready(function(){
+
+	myLoader.addFiles('img/stadium_01_front.png','img/stadium_01_right.png','img/stadium_01_left.png','img/warriors-logo.png','img/game_logo.png','img/player_01.jpg','img/app_bg.jpg','img/grass_01_left.jpg','img/grass_01_right.jpg','img/grass_01_front.jpg','img/share_btn.png','img/play_now_btn.png','img/again_btn.png','img/signup_btn.png','img/next_btn.png','img/login_btn.png','img/sky_01_bg.jpg'); 
+	
+	myLoader.on('finish', function(){
+		
+		$('#loading').fadeOut(500,function(){
+			
+			//$('#stage1').fadeIn(1000,function(){
+
+				loadNextStage("#loading","#stage1");
+		
+				gameLoaded();
+				
+			//});
+		
+		});
+	
+	});
 
 	if(jQuery.browser.mobile){
 
 		mobile = true;
 
 	}
+
+});
+
+function loadNextStage(prev,next){
+
+	$.logThis(prev +" / "+next);
+
+	$(prev).removeClass('current').hide();
+	$(next).addClass("current").show();
+
+	positionInitScreen();
+
+}
+
+function gameLoaded(){
 
 	myElement = document.getElementById('action_layer');
 	mc = new Hammer(myElement);
@@ -34,45 +69,35 @@ $(document).ready(function(){
 
 	resizeListeners();
 
-	$('#grass').css("background-size", "100% "+winHeight*0.7+"px");
+	$(".current .init_info").css('margin-top', ((winHeight - $(".current .init_info").outerHeight())/2)*0.8);
 
-	//$('#sky').css("background-size", "150% "+(150*skyRatio)+"%");
+	$('.enter_btn').on('click',function(e){
 
-	$('#start_game').on('click',function(){
+		e.preventDefault();
 
-		startGame();
+		$.logThis("enter");
+
+		if(mobile){
+		
+			$("#game").fullScreen(true);
+
+		}
+
+		loadNextStage("#stage1","#stage2");
 
 	});
 
-});
+	$('#login_btn').on('click',function(e){
 
-function startGame(){
-
-	$('#stage1').hide();
-
-	//winWidth = $(window).innerWidth();
-	//winHeight = $(window).innerHeight();
-
-	//$("#game").fullScreen(true);
-	
-	
-	if(mobile){
+		e.preventDefault();
 		
-		//goFullScreenApi();
-		
-		//$(document).fullScreen(true);
-		$(document).fullScreen(true);
-		
-
-
-
-	}else{
+		loadNextStage("#stage2","#stage3");
 
 		launchGame();
 
-	}
+	});
 
-}
+};
 
 function launchGame(){
 
@@ -112,6 +137,15 @@ function setupHammer(){
 
 }
 
+function positionInitScreen(){
+
+	winWidth = $(window).innerWidth();
+	winHeight = $(window).innerHeight();
+
+	$(".current .init_info").css('margin-top', ((winHeight - $(".current .init_info").outerHeight())/2)*0.8);
+
+}
+
 function resizeListeners(){
 
 	$(window).on('resize',function(){
@@ -121,9 +155,17 @@ function resizeListeners(){
 		//clearTimeout(resizeTimer);
 		//resizeTimer = setTimeout(resizeCanvas, 100);
 
+		winWidth = $(window).innerWidth();
+		winHeight = $(window).innerHeight();
+
+		positionInitScreen();
+		
+
 	});
 
 	$(window).on('orientationchange',function(){
+
+		positionInitScreen();
 
 		//alert("changed orientation");
 
@@ -193,7 +235,8 @@ $(document).bind("fullscreenchange", function() {
     if(initLoad < 1){
 
     	setTimeout(function(){
-    		launchGame();
+    		//launchGame();
+    		positionInitScreen();
     	},1500);
     	
     	initLoad ++;

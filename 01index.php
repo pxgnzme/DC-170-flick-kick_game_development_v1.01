@@ -37,7 +37,11 @@ $detect = new Mobile_Detect;
 
   <body id = "game">
 
-    <?php if ( $detect->isMobile() ) { ?>
+    <?php if ( !$detect->isMobile() ) { ?>
+
+    <div id = "container">
+
+    <?php } ?>
 
     <section id = "loading" class = "current stage">
 

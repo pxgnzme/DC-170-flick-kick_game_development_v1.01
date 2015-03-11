@@ -35,6 +35,10 @@ function flickKick(){
 		multi2:3,
 		multi3:4,
 		multi4:5,
+		multi1Hex:"#B85C43",
+		multi2Hex:"#A5C8D6",
+		multi3Hex:"#D9B655",
+		multi4Hex:"#E5E5E5",
 		levelScore:0,
 		parScore:20
 	
@@ -106,14 +110,15 @@ function flickKick(){
 		postsScreenHeight:0,
 		sideDiff:0,
 		padHeight: 0.65,
-		centerAngle:0
+		centerAngle:0,
+		postsBaseRScreen:0
 
 	};
 	
 
 	this.createGame = function(w,ht){
 
-		obj.runSkyTimer();
+		//obj.runSkyTimer();
 
 		obj.canvasWidth = w;
 		obj.canvasheight = ht;
@@ -141,11 +146,14 @@ function flickKick(){
 		var bgWFactor = 1600/405;
 
 		$('#bg'+obj.world.curView).show();
+		$('#grass'+obj.world.curView).show();
+		$('#line'+obj.world.curView).show();
 
 		$('.bg').css("background-size", (winHeight/2)*bgWFactor+"px "+winHeight/2+"px");
 
 		$('.bg').css("background-position", "center "+winHeight*0.03+"px");
 
+		$('.grass').css("background-size", "100% "+winHeight*0.5+"px");
 		obj.updateWind();
 
 
@@ -161,6 +169,12 @@ function flickKick(){
 	this.drawWorld = function(){
 
 		obj.drawPosts();
+
+		$('#line1').css('background-position', 'center '+obj.posts.postsBaseRScreen+"px");
+
+		$('#line2').css('background-position', 'center '+(obj.posts.postsBaseMid-22)+"px");
+
+		$('#line3').css('background-position', 'center '+(obj.posts.postsBaseRScreen-22)+"px");
 
 		obj.getBallSteps(1);
 
@@ -256,6 +270,7 @@ function flickKick(){
 
 		var topRPostsScreenY = (obj.worldHeight/2) - ((obj.worldHeight/2)*topRPostProjY);
 
+		obj.posts.postsBaseRScreen = topRPostsScreenY +rPostHeight;
 		//crossbar vars
 
 		var rCrossBarHeight = (obj.world.barheight/WidthOfFovAtRPost)*(obj.worldHeight/2);
@@ -387,6 +402,10 @@ function flickKick(){
 		var topLPostProjY = (obj.world.postHeight-obj.world.cameraHeight)/WidthOfFovAtLPost;
 
 		var topLPostsScreenY = (obj.worldHeight/2) - ((obj.worldHeight/2)*topLPostProjY);
+
+		obj.posts.postsBaseLScreen = topLPostsScreenY +lPostHeight;
+
+		obj.posts.postsBaseMid = ((obj.posts.postsBaseRScreen - obj.posts.postsBaseLScreen)/2)+obj.posts.postsBaseLScreen;
 
 		var lthickness = (obj.world.postThick/WidthOfFovAtLPost)*(obj.worldWidth/2);
 
@@ -830,9 +849,49 @@ function flickKick(){
 
 		$("#score-fraction").html(obj.score.totalOver+"/"+obj.score.totalKicks);
 
-		var hitPercent = Math.ceil((obj.score.totalOver/obj.score.totalKicks)*100);
+		var hitPercent = obj.score.totalOver/obj.score.totalKicks;
 
-		$('#score-percent').html(""+hitPercent+"");
+		var tokenHex = "";
+
+		if(hitPercent < obj.level.stage1){
+
+			$('#score-percent').hide();
+
+		}
+
+		if(hitPercent >= obj.level.stage1){
+
+			$('#score-percent').show();
+			tokenHex = obj.level.multi1Hex;
+
+		}
+
+		if(hitPercent > obj.level.stage2){
+
+			$('#score-percent').show();
+			tokenHex = obj.level.multi2Hex;
+
+		}
+
+		if(hitPercent > obj.level.stage3){
+
+			$('#score-percent').show();
+			tokenHex = obj.level.multi3Hex;
+
+		}
+
+		if(hitPercent == obj.level.stage4){
+
+			$('#score-percent').show();
+			tokenHex = obj.level.multi4Hex;
+
+		}
+
+		$.logThis("# :> "+tokenHex);
+
+		$('#score-percent .fi-star').css('color', tokenHex);
+
+		//$('#score-percent').html(""+hitPercent+"");
 
 	};
 
@@ -1038,14 +1097,14 @@ function flickKick(){
 
 			if(obj.world.curView == 1){
 
-			    if(gestureAngle > 30){
-					gestureAngle = 30;
+			    if(gestureAngle > 40){
+					gestureAngle = 40;
 				}
 
 			}else{
 
-				if(gestureAngle > 20){
-					gestureAngle = 20;
+				if(gestureAngle > 40){
+					gestureAngle = 40;
 				}
 
 			}
@@ -1128,11 +1187,11 @@ function flickKick(){
 
 	this.runSkyTimer = function(){
 
-		skyTimer = setTimeout(function(){
+		/*skyTimer = setTimeout(function(){
 
 			obj.moveSky();
 
-		},1000/6);
+		},1000/6);*/
 	}
 
 	this.moveSky = function(){
@@ -1167,13 +1226,13 @@ function flickKick(){
 
 			$('#time-secs').html("END");
 
-			obj.stopSkyTimer();
+			//obj.stopSkyTimer();
 
 			var scoreFraction = obj.score.totalOver/obj.score.totalKicks;
 
-			var hitPercent = Math.ceil(scoreFraction*100);
-
 			var multiplier = "0";
+
+			var tokenHex = "";
 
 			if(scoreFraction >= obj.level.stage1 && scoreFraction < obj.level.stage2){
 
@@ -1207,18 +1266,60 @@ function flickKick(){
 
 			obj.score.curScore += obj.level.levelScore;
 
-			$("#total-score").html(""+obj.score.curScore+"");
+		
+			if(scoreFraction < obj.level.stage1){
 
-			$(".total").show();
+				$('#score-percent').hide();
+
+			}
+
+			if(scoreFraction >= obj.level.stage1){
+
+				$('#score-percent').show();
+				tokenHex = obj.level.multi1Hex;
+
+			}
+
+			if(scoreFraction > obj.level.stage2){
+
+				$('#score-percent').show();
+				tokenHex = obj.level.multi2Hex;
+
+			}
+
+			if(scoreFraction > obj.level.stage3){
+
+				$('#score-percent').show();
+				tokenHex = obj.level.multi3Hex;
+
+			}
+
+			if(scoreFraction == obj.level.stage4){
+
+				$('#score-percent').show();
+				tokenHex = obj.level.multi4Hex;
+
+			}
+
+			$('#score-percent .fi-star').css('color', tokenHex);
 
 			if(obj.level.levelScore < obj.level.parScore){
 
-				$("#endLevel").show().html("<h2>TOO BAD!</h2><p>You got : "+obj.score.totalOver+"/"+obj.score.totalKicks+"<br />@ "+hitPercent+"%<br />x "+multiplier+"<br />Level score: "+obj.level.levelScore+"<br />But you needed at least "+obj.level.parScore+" points to pass this level<br />You finished with "+obj.score.curScore+" total points</p><button class ='share_btn'>Share with friends</button><button class ='replay_btn'>Start again</button>");
+				$("#endGame").html("<h2>TOO BAD!</h2><p>You got : "+obj.score.totalOver+"/"+obj.score.totalKicks+" <span class = 'score_multi'><i class='fi-star' id = 'score-star'></i> <small>x</small>"+multiplier+"</span><br />Level score: "+obj.level.levelScore+"<br />But you needed at least "+obj.level.parScore+" points to pass this level<br />You finished with "+obj.score.curScore+" total points</p><a href='#' class = 'btn share_btn'><img src='img/share_btn.png' alt=''/></a><a href='#' class = 'btn replay_btn'><img src='img/again_btn.png' alt=''/></a>");
+
+				$('.score_multi').css('color',tokenHex);
+
+				loadNextStage("#stage3","#endGame");
 
 
 			}else{
 
-				$("#endLevel").show().html("<h2>NICE!</h2><p>You got : "+obj.score.totalOver+"/"+obj.score.totalKicks+"<br />@ "+hitPercent+"%<br />x "+multiplier+"<br />Level score: "+obj.level.levelScore+"<br />Total score: "+obj.score.curScore+"</p><button class ='next_btn'>Continue >></button>");
+				$("#level_screen").html("<h2>NICE!</h1><p>You got : "+obj.score.totalOver+"/"+obj.score.totalKicks+" <span class = 'score_multi'><i class='fi-star' id = 'score-star'></i> <small>x</small>"+multiplier+"</span><br />Level score: "+obj.level.levelScore+"<br />Total score: "+obj.score.curScore+"</p><a href='#' class = 'btn next_btn'><img src='img/next_btn.png' alt=''/></a>");
+
+				$('.score_multi').css('color',tokenHex);
+
+				$("#endLevel").show();
+
 
 			}
 
@@ -1268,11 +1369,13 @@ function flickKick(){
 	this.resetLevel = function(){
 
 		obj.level.levelScore = 0;
-		obj.level.curtime = 60;
+		obj.level.curtime = 40;
 		obj.score.totalOver = 0;
 		obj.score.totalKicks = 0;
 		obj.ball.curFF = 0;
 		obj.ball.state = 0;
+
+		$('#score-percent').hide();
 
 		if(obj.world.windFactor != 6){
 
@@ -1280,7 +1383,7 @@ function flickKick(){
 
 		}
 
-		if(obj.level.parScore < 60){
+		if(obj.level.parScore < 70){
 
 			obj.level.parScore += 5;
 		}
@@ -1290,13 +1393,19 @@ function flickKick(){
 		$('.bg').hide();
 		$('#bg'+obj.world.curView).show();
 
-		$("#endLevel").html("").hide();
+		$('.grass').hide();
+		$('#grass'+obj.world.curView).show();
+
+		$('.line').hide();
+		$('#line'+obj.world.curView).show();
+
+		$("#endLevel").hide();
 
 		$("#score-fraction").html(obj.score.totalOver+"/"+obj.score.totalKicks);
 
-		var hitPercent = Math.ceil((obj.score.totalOver/obj.score.totalKicks)*100);
+		//var hitPercent = Math.ceil((obj.score.totalOver/obj.score.totalKicks)*100);
 
-		$('#score-percent').html("");
+		//$('#score-percent').html("");
 
 		obj.runTimer();
 
@@ -1318,26 +1427,36 @@ function flickKick(){
 		obj.ball.curWind = 0;
 
 		obj.level.levelScore = 0;
-		obj.level.curtime = 60;
+		obj.level.curtime = 40;
 		obj.score.totalOver = 0;
 		obj.score.totalKicks = 0;
 		obj.ball.curFF = 0;
 		obj.ball.state = 0;
+
+		$('#score-percent').hide();
 
 		obj.updateWind();
 
 		$('.bg').hide();
 		$('#bg'+obj.world.curView).show();
 
-		$("#endLevel").html("").hide();
+		$('.grass').hide();
+		$('#grass'+obj.world.curView).show();
+
+		$('.line').hide();
+		$('#line'+obj.world.curView).show();
+
+		$("#endLevel").hide();
 
 		$("#score-fraction").html(obj.score.totalOver+"/"+obj.score.totalKicks);
 
-		var hitPercent = Math.ceil((obj.score.totalOver/obj.score.totalKicks)*100);
+		//var hitPercent = Math.ceil((obj.score.totalOver/obj.score.totalKicks)*100);
 
-		$('#score-percent').html("");
+		//$('#score-percent').html("");
 
-		$(".total").hide();
+		//$(".total").hide();
+
+		loadNextStage("#endGame","#stage3");
 
 		obj.runTimer();
 
@@ -1352,15 +1471,16 @@ function flickKick(){
 
 	this.updateWind = function(){
 
-		if(obj.world.windFactor == 0){
+		/*if(obj.world.windFactor == 0){
 
 			$('.wind').hide();
 
-		}else{
+		}else{*/
 
 			//obj.ball.curWind
 
 			$('.wind').show();
+			$('.wind-indicator').html("");
 
 			var windSelector = Math.round(Math.random() * (obj.world.windFactor - (obj.world.windFactor*-1)) + (obj.world.windFactor*-1));
 
@@ -1392,11 +1512,11 @@ function flickKick(){
 
 			}
 
-			if(windFactor == 0){
+			/*if(windFactor == 0){
 
 				$('.wind').hide();
 
-			}
+			}*/
 
 			$('#wind-strength').html(arrowTxt);
 
@@ -1404,9 +1524,31 @@ function flickKick(){
 
 			obj.ball.curWind = windSelector;
 
+			var displayWind = obj.ball.curWind;
+
+			if(obj.ball.curWind == 0){
+
+				$('.wind-indicator').html("");
+
+			}else if(obj.ball.curWind < 0){
+
+				$('.wind-right').html("");
+				$('.wind-left').html("<i class='fi-arrow-left'></i>");
+
+				displayWind = displayWind*-1;
+
+			}else{
+
+				$('.wind-left').html("");
+				$('.wind-right').html("<i class='fi-arrow-right'></i>");
+
+			}
+
+			$('.wind').html(displayWind+"<small>km</small>");
+
 			
 
-		}
+		/*}*/
 
 	};
 
