@@ -15,9 +15,19 @@ body{
 	background-size: cover;
 }
 
+
 #game{
 
 	
+}
+
+#container{
+	position: relative;
+	width:100%;
+	max-width: 1200px;
+	margin: 0px auto;
+	overflow: hidden;
+	height:100%;
 }
 
 .bg{
@@ -29,6 +39,12 @@ body{
 	background-repeat: no-repeat;
 	display:none;
 	position: absolute;
+
+}
+
+h2{
+
+	font-family:'sports_jerseyregular';
 
 }
 
@@ -57,8 +73,8 @@ body{
 	z-index: 0;
 	background-position: top left;
 	position: absolute;
-	background-color:#4277a1;
-	background-image:url("../img/sky_01_bg.jpg");
+	/*background-color:#b5e4ff;*/
+	background-image:url("../img/sky_bg_grad.jpg");
 	background-repeat:repeat-x;
 }
 
@@ -278,7 +294,7 @@ body{
 	
 	h2{
 		color:white;
-		font-size: 3rem;
+		font-size: 3.5rem;
 		margin-top:20%;
 		display: inline-block;
 		padding:50px 50px 40px 50px;
@@ -385,14 +401,12 @@ body{
 
 .init_info{
 
-	
-
 	p{
 		text-align: center;
 		margin: 0px;
 	}
 
-	h3{
+	h2{
 		text-align: center;
 		color:#fff;
 		text-transform: uppercase;
@@ -400,6 +414,54 @@ body{
 
 	#w-logo{
 		text-align: center;
+	}
+
+	.player_select{
+
+		text-align: center;
+
+		.player_arrow{
+			font-size:2.8rem;
+			color:#f32f0c;
+			display: inline-block;
+			width:20%;
+			vertical-align: middle;
+		
+
+		}
+
+		.avartar_container{
+
+			vertical-align: middle;
+
+			width:50%;
+			display: inline-block;
+			border-radius:50%;
+			overflow:hidden;
+			background-color: #fff;
+			max-width: 300px;
+			/*max-width:200px;*/
+			border: #f32f0c 3px solid;
+
+			.avartar{
+				display:inline-block;
+				width:100%;
+
+				
+				img{
+
+					margin-top:2px;
+				}
+
+			}
+		}
+
+	}
+
+	#player_name{
+
+		height:2rem;
+
 	}
 
 }

@@ -21,10 +21,13 @@ $detect = new Mobile_Detect;
     <title>Warriors 3D projection</title>
 
     <link rel="stylesheet" href="fonts/foundation-icons.css" />
+    <link rel="stylesheet" href="css/warriors-font.css?2" />
+    
     <link rel="stylesheet" href="css/screen.css?2" />
 
     <script src="js/vendor/modernizr.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="js/foundation.min.js"></script>
     <script type="text/javascript" src="js/html5Preloader.js"></script>
 
     <script src="js/jquery.fullscreen-min.js"></script>
@@ -37,7 +40,11 @@ $detect = new Mobile_Detect;
 
   <body id = "game">
 
-    <?php if ( $detect->isMobile() ) { ?>
+    
+
+    <div id = "container">
+
+    
 
     <section id = "loading" class = "current stage">
 
@@ -67,8 +74,8 @@ $detect = new Mobile_Detect;
 
           <div class = "large-12 medium-12 small-12 large-centered medium-centered small-centered column">
 
-            <h3>Login or sign up to play</h3>
-          <p>So we know who to send the prizes to when you win.</p>
+            <h2>Login or sign up to play</h2>
+            <p>So we know who to send the prizes to when you win.</p>
 
           </div>
 
@@ -84,16 +91,48 @@ $detect = new Mobile_Detect;
 
           </div>
 
-
         </div>
-
-  
 
       </div>
 
     </section>
 
     <section id = "stage3" class = "stage">
+
+      <div class = "row init_info">      
+
+        <div class = "columns large-6 medium-8 small-10 large-centered medium-centered small-centered text-center">
+
+          <h2>CHOOSE PLAYER</h2>
+
+          <div class = "player_select">
+
+            <span class = "player_arrow text-right" id="select_left"><i class="fi-arrow-left"></i></span>
+
+            <!-- <div class= "columns large-6 medium-6 small-6">-->
+             
+            <span class  ="avartar_container">
+
+              <span class = "avartar"></span>
+
+            </span>
+            <!-- </div>-->
+
+            <span class = "player_arrow text-left" id="select_right"><i class="fi-arrow-right"></i></span>
+
+          </div>
+
+          <div id="player_name"><p id = "pname"></p></div>          
+
+          <a href="#" class = "btn play_now"><img src="img/play_now_btn.png" alt=""/></a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id = "stage4" class = "stage">
 
       <section id = "bg1" class = "bg"></section>
       <section id = "bg2" class = "bg"></section>
@@ -172,31 +211,36 @@ $detect = new Mobile_Detect;
 
     <section id = "endGame" class = "stage"></section>
 
-    <?php }else{ ?>
+    
 
-    <section id = "stage1" class = "current stage">
+    </div>
 
-      <div class = "init_info">
+    <div id="mobileModal" class="reveal-modal" data-reveal>
 
-        <div class = "large-8 medium-6 small-8 large-centered medium-centered small-centered column"><img src="img/game_logo.png" alt= "Vodafone Warriors 20 years Flick Kick"/>
-          <p>This game is built to be played on a smartphone please load this page in your smartphones mobile browser or scan this QR code:</p>
+      <div class = "columns large-12 text-center">
 
-          <img src="img/qrcode.28098220.png" alt=""/>
+        <h4>For the full Warriors flick kick experience load this page in your smartphones mobile browser, or scan the below QR code.</h4>
 
-        </div>
-
-        
+        <img src="img/qrcode.28098220.png" alt=""/>
 
       </div>
+      
+      <a class="close-reveal-modal">&#215;</a>
+      
+    </div>
 
-    </section>
-
-    <?php } ?>
+    
 
     <!--  JAVASCRIPT -->
     <script src="http://hammerjs.github.io/dist/hammer.js"></script>
+    <script>
+
+      $(document).foundation();
+
+    </script>
     <script src="js/custom.js?2"></script>
     <script src="js/flickKick.js?1"></script>
+
     <!-- -->
 
   </body>

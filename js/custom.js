@@ -20,9 +20,63 @@ var myLoader = html5Preloader();
 
 //makeFullscreen();
 
+var playerTicker = 0;
+
+var players = [
+
+	{
+		name:'Shaun Johnson',
+		src:'player_01.jpg'
+	},
+
+	{
+		name:'Manu Vatuvei',
+		src:'player_02.jpg'
+	},
+
+	{
+		name:'Sam Tomkins',
+		src:'player_03.jpg'
+	},
+
+	{
+		name:'Konrad Hurrell',
+		src:'player_04.jpg'
+	},
+
+	{
+		name:'Stacey Jones',
+		src:'player_05.jpg'
+	},
+
+	{
+		name:'Ruben Wiki',
+		src:'player_06.jpg'
+	}
+
+];
+
+var num_players = players.length;
+
+var selectedPlayer = {
+
+};
+
 $(document).ready(function(){
 
-	myLoader.addFiles('img/stadium_01_front.png','img/stadium_01_right.png','img/stadium_01_left.png','img/warriors-logo.png','img/game_logo.png','img/player_01.jpg','img/app_bg.jpg','img/grass_01_left.jpg','img/grass_01_right.jpg','img/grass_01_front.jpg','img/share_btn.png','img/play_now_btn.png','img/again_btn.png','img/signup_btn.png','img/next_btn.png','img/login_btn.png','img/sky_01_bg.jpg'); 
+	if(jQuery.browser.mobile){
+
+		mobile = true;
+
+	}else{
+
+		$('#mobileModal').foundation('reveal', 'open');
+
+	}
+
+	//$.logThis("num_players :> "+num_players);
+
+	myLoader.addFiles('img/stadium_01_front.png','img/stadium_01_right.png','img/stadium_01_left.png','img/warriors-logo.png','img/game_logo.png','img/player_01.jpg','img/app_bg.jpg','img/grass_01_left.jpg','img/grass_01_right.jpg','img/grass_01_front.jpg','img/share_btn.png','img/play_now_btn.png','img/again_btn.png','img/signup_btn.png','img/next_btn.png','img/login_btn.png','img/sky_bg_grad.jpg'); 
 	
 	myLoader.on('finish', function(){
 		
@@ -40,11 +94,7 @@ $(document).ready(function(){
 	
 	});
 
-	if(jQuery.browser.mobile){
-
-		mobile = true;
-
-	}
+	
 
 });
 
@@ -64,8 +114,8 @@ function gameLoaded(){
 	myElement = document.getElementById('action_layer');
 	mc = new Hammer(myElement);
 
-	winWidth = $(window).innerWidth();
-	winHeight = $(window).innerHeight();
+	winWidth = $("#container").innerWidth();
+	winHeight = $("#container").innerHeight();
 
 	resizeListeners();
 
@@ -93,9 +143,103 @@ function gameLoaded(){
 		
 		loadNextStage("#stage2","#stage3");
 
+		loadSelectionScreen(0);
+		
+
+	});
+
+	$('#signup_btn').on('click',function(e){
+
+		e.preventDefault();
+
+	});
+
+	$('.play_now').on('click',function(e){
+
+		e.preventDefault();
+
+		selectedPlayer.name = players[playerTicker].name;
+
+		selectedPlayer.src = players[playerTicker].src;
+
+		loadNextStage("#stage3","#stage4");
+
 		launchGame();
 
 	});
+
+	$('#select_left').on('click',function(){
+
+		$.logThis("left :> "+playerTicker);
+
+		if(playerTicker == 0){
+
+			playerTicker = num_players-1;
+
+		}else{
+
+			playerTicker --;
+
+		}
+		
+		loadSelectionScreen(1);
+
+	});
+
+	$('#select_right').on('click',function(){
+
+		$.logThis("right");
+
+		if(playerTicker == (num_players-1)){
+
+			playerTicker = 0;
+
+		}else{
+
+			playerTicker ++;
+
+		}
+
+		loadSelectionScreen(1);
+
+	});
+
+};
+
+function loadSelectionScreen(mode){
+
+	if(mode == 0){
+
+		$('.player_select .avartar').html("<img src='img/"+players[playerTicker].src+"' alt='"+players[playerTicker].name+"' />");
+
+
+		$('#pname').html(players[playerTicker].name);
+
+		positionInitScreen();
+
+
+	}else{
+
+		$('#pname').hide();
+
+		$('.player_select .avartar').fadeOut(500,function(){
+
+			$('.player_select .avartar').html("<img src='img/"+players[playerTicker].src+"' alt='"+players[playerTicker].name+"' />").fadeIn(500,function(){
+
+					$('#pname').html(players[playerTicker].name).fadeIn(500);
+
+					positionInitScreen();
+
+				}
+			);
+
+			
+
+		});
+
+	}
+
+	
 
 };
 
@@ -104,8 +248,8 @@ function launchGame(){
 	$('#game_container').show();
 	$('#action_layer').show();
 
-	winWidth = $(window).innerWidth();
-	winHeight = $(window).innerHeight();
+	winWidth = $("#container").innerWidth();
+	winHeight = $("#container").innerHeight();
 
 	gameOb = new flickKick();
 	gameOb.createGame(winWidth, winHeight);
@@ -139,8 +283,8 @@ function setupHammer(){
 
 function positionInitScreen(){
 
-	winWidth = $(window).innerWidth();
-	winHeight = $(window).innerHeight();
+	winWidth = $("#container").innerWidth();
+	winHeight = $("#container").innerHeight();
 
 	$(".current .init_info").css('margin-top', ((winHeight - $(".current .init_info").outerHeight())/2)*0.8);
 
@@ -155,8 +299,8 @@ function resizeListeners(){
 		//clearTimeout(resizeTimer);
 		//resizeTimer = setTimeout(resizeCanvas, 100);
 
-		winWidth = $(window).innerWidth();
-		winHeight = $(window).innerHeight();
+		winWidth = $("#container").innerWidth();
+		winHeight = $("#container").innerHeight();
 
 		positionInitScreen();
 		

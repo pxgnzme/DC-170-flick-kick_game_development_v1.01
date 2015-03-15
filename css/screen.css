@@ -7321,6 +7321,14 @@ body {
   -o-background-size: cover;
   background-size: cover; }
 
+#container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0px auto;
+  overflow: hidden;
+  height: 100%; }
+
 .bg {
   width: 100%;
   height: 100%;
@@ -7329,6 +7337,9 @@ body {
   background-repeat: no-repeat;
   display: none;
   position: absolute; }
+
+h2 {
+  font-family: 'sports_jerseyregular'; }
 
 #bg1 {
   background-image: url("../img/stadium_01_front.png"); }
@@ -7345,8 +7356,8 @@ body {
   z-index: 0;
   background-position: top left;
   position: absolute;
-  background-color: #4277a1;
-  background-image: url("../img/sky_01_bg.jpg");
+  /*background-color:#b5e4ff;*/
+  background-image: url("../img/sky_bg_grad.jpg");
   background-repeat: repeat-x; }
 
 .grass {
@@ -7497,7 +7508,7 @@ body {
   text-align: center; }
   #result_container h2 {
     color: white;
-    font-size: 3rem;
+    font-size: 3.5rem;
     margin-top: 20%;
     display: inline-block;
     padding: 50px 50px 40px 50px;
@@ -7570,12 +7581,37 @@ body {
 .init_info p {
   text-align: center;
   margin: 0px; }
-.init_info h3 {
+.init_info h2 {
   text-align: center;
   color: #fff;
   text-transform: uppercase; }
 .init_info #w-logo {
   text-align: center; }
+.init_info .player_select {
+  text-align: center; }
+  .init_info .player_select .player_arrow {
+    font-size: 2.8rem;
+    color: #f32f0c;
+    display: inline-block;
+    width: 20%;
+    vertical-align: middle; }
+  .init_info .player_select .avartar_container {
+    vertical-align: middle;
+    width: 50%;
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #fff;
+    max-width: 300px;
+    /*max-width:200px;*/
+    border: #f32f0c 3px solid; }
+    .init_info .player_select .avartar_container .avartar {
+      display: inline-block;
+      width: 100%; }
+      .init_info .player_select .avartar_container .avartar img {
+        margin-top: 2px; }
+.init_info #player_name {
+  height: 2rem; }
 
 .btn {
   width: 100%;

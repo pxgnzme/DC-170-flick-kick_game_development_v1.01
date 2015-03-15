@@ -40,7 +40,8 @@ function flickKick(){
 		multi3Hex:"#D9B655",
 		multi4Hex:"#E5E5E5",
 		levelScore:0,
-		parScore:20
+		parScore:20,
+		alive:true
 	
 	};
 
@@ -114,6 +115,8 @@ function flickKick(){
 		postsBaseRScreen:0
 
 	};
+
+	this.logoImageObj = new Image();
 	
 
 	this.createGame = function(w,ht){
@@ -156,6 +159,8 @@ function flickKick(){
 		$('.grass').css("background-size", "100% "+winHeight*0.5+"px");
 		obj.updateWind();
 
+		$('#game_skin .avartar').html("<img src='img/"+selectedPlayer.src+"' alt='"+selectedPlayer.name+"' />");
+
 
 	};
 
@@ -176,7 +181,7 @@ function flickKick(){
 
 		$('#line3').css('background-position', 'center '+(obj.posts.postsBaseRScreen-22)+"px");
 
-		obj.getBallSteps(1);
+		obj.getBallSteps(0);
 
 	};
 
@@ -257,10 +262,10 @@ function flickKick(){
 		var rPostToCamera = rPostwidthFromCenter/Math.tan(rPostAngleFromCemter);
 
 		var WidthOfFovAtRPost = Math.tan(obj.world.fov * Math.PI/180)*rPostToCamera;
+		//PXG
+		var rthickness = (obj.world.postThick/WidthOfFovAtRPost)*(obj.worldHeight/2);
 
-		var rthickness = (obj.world.postThick/WidthOfFovAtRPost)*(obj.worldWidth/2);
-
-		var screenRPost = (rPostwidthFromCenter/(WidthOfFovAtRPost/2))*(obj.worldWidth/2); 
+		var screenRPost = (rPostwidthFromCenter/(WidthOfFovAtRPost/2))*(obj.worldHeight/2); 
 
 		obj.posts.screenRPost = screenRPost;
 
@@ -393,7 +398,7 @@ function flickKick(){
 
 		var WidthOfFovAtLPost = Math.tan(obj.world.fov * Math.PI/180)*lPostToCamera;
 
-		var screenLPost = (lPostwidthFromCenter/(WidthOfFovAtLPost/2))*(obj.worldWidth/2); 
+		var screenLPost = (lPostwidthFromCenter/(WidthOfFovAtLPost/2))*(obj.worldHeight/2); 
 
 		obj.posts.screenLPost = screenLPost;
 
@@ -407,7 +412,7 @@ function flickKick(){
 
 		obj.posts.postsBaseMid = ((obj.posts.postsBaseRScreen - obj.posts.postsBaseLScreen)/2)+obj.posts.postsBaseLScreen;
 
-		var lthickness = (obj.world.postThick/WidthOfFovAtLPost)*(obj.worldWidth/2);
+		var lthickness = (obj.world.postThick/WidthOfFovAtLPost)*(obj.worldHeight/2);
 
 		var lCrossBarHeight = (obj.world.barheight/WidthOfFovAtLPost)*(obj.worldHeight/2);
 
@@ -591,12 +596,6 @@ function flickKick(){
 
 		var hX = Math.tan(obj.ball.gAngle * Math.PI/180)*obj.getDistance();
 
-		//var hX = Math.tan(obj.ball.gAngle * Math.PI/180)*obj.world.dToPosts;
-
-		//$.logThis("d :> "+obj.getDistance()+" :: obj.world.dToPosts :> "+obj.world.dToPosts);
-
-		//var hX = Math.tan(obj.ball.gAngle * Math.PI/180)*obj.getDistance();
-
 		var cameraToBall = obj.getDistance() + obj.world.dToScreen + obj.world.dSceenToBall;
 
 		var widthOfFovAtBall = Math.tan(obj.world.fov * Math.PI/180)*cameraToBall;
@@ -685,11 +684,18 @@ function flickKick(){
 
 			obj.drawTee();
 
-			obj.drawBall(curBallH, curBallV, curBallLenght);
+			
 
 			if(mode == 0){
+
+				obj.drawBall(curBallH, curBallV, curBallLenght,1);
+
 				obj.inflight = false;
 				obj.updateWind();
+			}else{
+
+				obj.drawBall(curBallH, curBallV, curBallLenght,0);
+
 			}
 
 		}
@@ -697,7 +703,7 @@ function flickKick(){
 
 	}
 
-	this.drawBall = function(h,v,ballL){
+	this.drawBall = function(h,v,ballL,logo){
 
 		//$.logThis("v:> "+v);
 
@@ -754,7 +760,23 @@ function flickKick(){
 		context.lineTo(0, 0+(ballL/2));
 		context.stroke();
 
-		context.restore();
+		var logoFactor = 50/69;
+
+		if(logo == 1){
+
+			obj.logoImageObj.src = 'img/ball-logo.png';
+
+			//obj.logoImageObj.onload = function() {
+
+			context.drawImage(obj.logoImageObj, ((ballL*0.8)*obj.world.ballHfactor)/-2, ((ballL*0.8)*obj.world.ballHfactor)/-2.8,(ballL*0.8)*obj.world.ballHfactor,(ballL*0.8)*obj.world.ballHfactor);
+
+			context.restore();
+
+		//};
+		}else{
+			context.restore();
+		}
+		
 
 	};
 
@@ -772,50 +794,6 @@ function flickKick(){
 
 		var indicatorColor = 'red'
 
-		/*if(obj.ball.hitV && obj.ball.hitH) {
-
-			indicatorColor = 'white';
-
-			context.beginPath();
-	      	context.arc(obj.indicator.x, obj.indicator.y, obj.indicator.radius, 0, 2 * Math.PI, false);	
-	      	context.strokeStyle = indicatorColor;
-	      	context.lineWidth = 2;
-	      	context.fillStyle = indicatorColor;
-		    context.fill();
-	      	context.stroke();
-	      	
-
-	      	context.beginPath();
-	      	context.arc(obj.indicator.x, obj.indicator.y, obj.indicator.radius*4, 0, 2 * Math.PI, false);
-	      	context.strokeStyle = indicatorColor;
-	      	context.lineWidth = 4;
-	      	context.stroke();
-
-	      	context.beginPath();
-	      	context.arc(obj.indicator.x, obj.indicator.y, obj.indicator.radius*8, 0, 2 * Math.PI, false);
-	      	context.lineWidth = 8;
-	      	context.strokeStyle = indicatorColor;
-	      	context.stroke();	
-
-		}else{
-
-			context.beginPath();
-			context.moveTo(obj.indicator.x-(obj.indicator.radius*8), obj.indicator.y-(obj.indicator.radius*8));
-			context.lineTo(obj.indicator.x+(obj.indicator.radius*8), obj.indicator.y+(obj.indicator.radius*8));
-			context.lineWidth = 8;
-	      	context.strokeStyle = indicatorColor;
-			context.stroke();
-
-			context.beginPath();
-			context.moveTo(obj.indicator.x-(obj.indicator.radius*8), obj.indicator.y
-				+(obj.indicator.radius*8));
-			context.lineTo(obj.indicator.x+(obj.indicator.radius*8), obj.indicator.y-(obj.indicator.radius*8));
-			context.lineWidth = 8;
-	      	context.strokeStyle = indicatorColor;
-			context.stroke();
-
-		}*/
-
 		obj.kickResult();
 
 		obj.ball.hitV = false;
@@ -829,6 +807,8 @@ function flickKick(){
 
 		obj.score.totalKicks ++;
 
+		$.logThis("keick result");
+
 		var resTxt = "MISS!";
 
 		if(obj.ball.hitV && obj.ball.hitH){
@@ -841,55 +821,75 @@ function flickKick(){
 
 		$('#result_container').html("<h2>"+resTxt+"</h2>");
 
-		$("#result_container").fadeIn(200,function(){
+		if(obj.level.alive){
 
-			$("#result_container").delay(500).fadeOut(200);
+			$.logThis("alive :> "+obj.level.alive);
 
-		});
+			$("#result_container").fadeIn(200,function(){
 
-		$("#score-fraction").html(obj.score.totalOver+"/"+obj.score.totalKicks);
+				$("#result_container").delay(500).fadeOut(200);
 
-		var hitPercent = obj.score.totalOver/obj.score.totalKicks;
+			});
 
-		var tokenHex = "";
+			$("#score-fraction").html(obj.score.totalOver+"/"+obj.score.totalKicks);
 
-		if(hitPercent < obj.level.stage1){
+			var hitPercent = obj.score.totalOver/obj.score.totalKicks;
 
-			$('#score-percent').hide();
+			var tokenHex = "";
+
+			if(hitPercent < obj.level.stage1){
+
+				$('#score-percent').hide();
+
+			}
+
+			if(hitPercent >= obj.level.stage1){
+
+				$('#score-percent').show();
+				tokenHex = obj.level.multi1Hex;
+
+			}
+
+			if(hitPercent > obj.level.stage2){
+
+				$('#score-percent').show();
+				tokenHex = obj.level.multi2Hex;
+
+			}
+
+			if(hitPercent > obj.level.stage3){
+
+				$('#score-percent').show();
+				tokenHex = obj.level.multi3Hex;
+
+			}
+
+			if(hitPercent == obj.level.stage4){
+
+				$('#score-percent').show();
+				tokenHex = obj.level.multi4Hex;
+
+			}
+
+			$.logThis("# :> "+tokenHex);
+
+			$('#score-percent .fi-star').css('color', tokenHex);
+
+		}else{
+
+			$.logThis("NOT alive :> "+obj.level.alive);
+
+			$("#result_container").fadeIn(200,function(){
+
+				$("#result_container").delay(500).fadeOut(200,function(){
+
+					obj.endLevel();
+
+				});
+
+			});
 
 		}
-
-		if(hitPercent >= obj.level.stage1){
-
-			$('#score-percent').show();
-			tokenHex = obj.level.multi1Hex;
-
-		}
-
-		if(hitPercent > obj.level.stage2){
-
-			$('#score-percent').show();
-			tokenHex = obj.level.multi2Hex;
-
-		}
-
-		if(hitPercent > obj.level.stage3){
-
-			$('#score-percent').show();
-			tokenHex = obj.level.multi3Hex;
-
-		}
-
-		if(hitPercent == obj.level.stage4){
-
-			$('#score-percent').show();
-			tokenHex = obj.level.multi4Hex;
-
-		}
-
-		$.logThis("# :> "+tokenHex);
-
-		$('#score-percent .fi-star').css('color', tokenHex);
 
 		//$('#score-percent').html(""+hitPercent+"");
 
@@ -1224,7 +1224,32 @@ function flickKick(){
 	    
 		}else{
 
+			obj.level.alive = false;
+
+			//obj.updateTime();
+
 			$('#time-secs').html("END");
+
+			$.logThis("alive end :> "+obj.level.alive);
+
+			$.logThis("inflight :> "+obj.inflight);
+
+			if(!obj.inflight){
+
+				obj.endLevel();
+
+			}
+
+			
+			
+
+		}
+
+	}
+
+	this.endLevel = function(){
+
+		$('#time-secs').html("END");
 
 			//obj.stopSkyTimer();
 
@@ -1309,7 +1334,7 @@ function flickKick(){
 
 				$('.score_multi').css('color',tokenHex);
 
-				loadNextStage("#stage3","#endGame");
+				loadNextStage("#stage4","#endGame");
 
 
 			}else{
@@ -1323,7 +1348,9 @@ function flickKick(){
 
 			}
 
-			$('.replay_btn').on('click',function(){
+			$('.replay_btn').on('click',function(e){
+
+				e.preventDefault();
 
 				obj.startAgain();
 
@@ -1331,7 +1358,9 @@ function flickKick(){
 
 			});
 
-			$('.next_btn').on('click',function(){
+			$('.next_btn').on('click',function(e){
+
+				e.preventDefault();
 
 				switch(obj.world.curView){
 
@@ -1362,11 +1391,11 @@ function flickKick(){
 
 			});
 
-		}
-
 	}
 
 	this.resetLevel = function(){
+
+		obj.level.alive = true;
 
 		obj.level.levelScore = 0;
 		obj.level.curtime = 40;
@@ -1420,6 +1449,8 @@ function flickKick(){
 
 	this.startAgain = function(){
 
+		obj.level.alive = true;
+
 		obj.world.curView = 1;
 		obj.posts.sideDiff = 0;
 		obj.score.curScore = 0;
@@ -1456,7 +1487,7 @@ function flickKick(){
 
 		//$(".total").hide();
 
-		loadNextStage("#endGame","#stage3");
+		loadNextStage("#endGame","#stage4");
 
 		obj.runTimer();
 
@@ -1551,6 +1582,12 @@ function flickKick(){
 		/*}*/
 
 	};
+
+	/*
+
+	
+
+	*/
 
 	//game loop
 	this.gameLoop = function() {
