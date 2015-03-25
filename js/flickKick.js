@@ -120,6 +120,8 @@ function flickKick(){
 	this.logoImageObj = new Image();
 
 	this.vodaObj = new Image();
+
+	this.vodaObjL = new Image();
 	
 
 	this.createGame = function(w,ht){
@@ -343,9 +345,31 @@ function flickKick(){
 	    context.fill();
 
 	    /* vodafone logo */
-	    //obj.vodaObj.src = 'img/voda.png';
+	    obj.vodaObj.src = 'img/voda.png';
 
-		//context.drawImage(obj.logoImageObj, 0, 0,10,10);
+	    if(inside){
+
+		    context.drawImage(obj.vodaObj, screenRPost-(rthickness*1), rPostHeight-(((rCrossBarHeight*obj.posts.padHeight)/2)+((rthickness*4)/2)),rthickness*4,rthickness*4);
+
+
+	    }else{
+
+	    	if(left){
+
+		    	$.logThis("left :> "+left);
+
+		    	context.drawImage(obj.vodaObj, screenRPost, rPostHeight-(((rCrossBarHeight*obj.posts.padHeight)/2)+((rthickness*3)/2)),rthickness*3,rthickness*3);
+
+	    	}else{
+
+	    		$.logThis("right :> "+left);
+		    	
+		    	context.drawImage(obj.vodaObj, screenRPost-(rthickness*2), rPostHeight-(((rCrossBarHeight*obj.posts.padHeight)/2)+((rthickness*3)/2)),rthickness*3,rthickness*3);
+
+			}
+
+	    }
+
 
 	    /* post shadow */
 
@@ -476,6 +500,36 @@ function flickKick(){
 	    context.fillStyle = grd5;
 
 	    context.fill();
+
+	     /* vodafone logo */
+
+	    obj.vodaObjL.src = 'img/voda.png';
+
+	    if(inside){
+
+		   //context.drawImage(obj.vodaObjL, screenLPost-(lthickness*1), lPostHeight-(((lCrossBarHeight*obj.posts.padHeight)/2)+((lthickness*4)/2)),lthickness*4,lthickness*4);
+
+		    context.drawImage(obj.vodaObjL, (screenLPost+(lthickness*3))*-1, lPostHeight-(((lCrossBarHeight*obj.posts.padHeight)/2)+((lthickness*4)/2)),lthickness*4,lthickness*4);
+
+
+	    }else{
+
+	    	if(left){
+
+		    	$.logThis("left :> "+left);
+
+		    	context.drawImage(obj.vodaObjL, (screenLPost+lthickness)*-1, lPostHeight-(((lCrossBarHeight*obj.posts.padHeight)/2)+((lthickness*3)/2)),lthickness*3,lthickness*3);
+
+	    	}else{
+
+	    		$.logThis("right :> "+left);
+		    	
+		    	context.drawImage(obj.vodaObjL, (screenLPost+(lthickness*3))*-1, lPostHeight-(((lCrossBarHeight*obj.posts.padHeight)/2)+((lthickness*3)/2)),lthickness*3,lthickness*3);
+
+			}
+
+	    }
+
 
 	    /* post shadow */
 
