@@ -21,6 +21,10 @@ body{
 	
 }
 
+.mob input{
+	font-size: 1.6rem !important;
+}
+
 #container{
 	position: relative;
 	width:100%;
@@ -315,6 +319,17 @@ h2{
 
 }
 
+.ie{
+	#action_layer{
+		display:block !important;
+		z-index: 2000 !important;
+		height:100% !important;
+		width:100% !important;
+		background-color: #000 !important;
+		opacity: 0.1;
+	}
+}
+
 #endLevel{
 	width:100%;
 	height:100%;
@@ -416,6 +431,10 @@ h2{
 		text-align: center;
 	}
 
+	.back-btn{
+		margin:0px;
+	}
+
 	.player_select{
 
 		text-align: center;
@@ -466,6 +485,42 @@ h2{
 
 }
 
+.reveal-modal{
+	p{
+		color:#000;
+	}
+}
+
+#leadersModal{
+
+	height:100%;
+	top: 0px !important;
+
+	#leaders_text{
+
+		width:100%;
+		height:80%;
+		overflow:auto;
+
+		.leaders{
+
+			width:100%;
+
+			.leaders_avartar{
+
+				img{
+					width:30px;
+				}
+
+
+			}
+
+		}
+
+	}
+
+}
+
 .btn{
 	width:100%;
 	display: inline-block;
@@ -473,4 +528,24 @@ h2{
 	text-align: center;
 	margin-top:10px;
 }
+
+.button{
+	font-family:'sports_jerseyregular';
+	padding:10px 10px 4px 10px;
+	text-transform: uppercase;
+	font-size: 2rem;
+}
+
+.tiny{
+	font-size: 1rem !important;
+}
+
+/*.leaders_btns{
+
+	line-height: 2.5rem;
+
+	
+
+}*/
+
 

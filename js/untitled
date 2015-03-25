@@ -1,0 +1,27 @@
+<h2>TOO BAD!</h2>
+
+<p>You got : "+obj.score.totalOver+"/"+obj.score.totalKicks+" <span class = 'score_multi'><i class='fi-star' id = 'score-star'></i> <small>x</small>"+multiplier+"</span><br />Level score: "+obj.level.levelScore+"<br />But you needed at least "+obj.level.parScore+" points to pass level "+obj.score.curLevel+"<br />You finished with "+obj.score.curScore+" total points
+</p>
+
+
+
+<div class = "row large-8 medium-12 small-10 large-centered medium-centered small-centered column">
+
+	<ul class= 'button-group radius even-2'>
+		<li>
+			<a href='#' class = 'btn share_btn button' data-reveal-id='shareModal'>Brag to ya mates</a>
+		</li>
+
+		<li>
+			<a href='#' class = 'btn replay_btn'>play again <i class='fi-refresh'></i></a>
+		</li>
+	</ul>
+
+</div>
+
+<div class = "row large-8 medium-12 small-10 large-centered medium-centered small-centered column">
+	<ul class= 'button-group radius even-2 leaders_btns'><li><a href='#' class = 'tiny leaders_btn secondary button leaders_daily'>Daily Top Ten</a></li><li><a href='#' class = 'tiny leaders_btn button secondary leaders_all'>Overall Top Ten</a></li>
+	</ul>
+</div>
+
+<h2>TOO BAD!</h2><p>You got : "+obj.score.totalOver+"/"+obj.score.totalKicks+" <span class = 'score_multi'><i class='fi-star' id = 'score-star'></i> <small>x</small>"+multiplier+"</span><br />Level score: "+obj.level.levelScore+"<br />But you needed at least "+obj.level.parScore+" points to pass level "+obj.score.curLevel+"<br />You finished with "+obj.score.curScore+" total points</p><div class = "row large-8 medium-12 small-10 large-centered medium-centered small-centered column"><ul class= 'button-group radius even-2'><li><a href='#' class = 'btn share_btn button' data-reveal-id='shareModal'>Brag to ya mates</a></li><li><a href='#' class = 'btn replay_btn button'>play again <i class='fi-refresh'></i></a></li></ul></div><div class = "row large-8 medium-12 small-10 large-centered medium-centered small-centered column"><ul class= 'button-group radius even-2 leaders_btns'><li><a href='#' class = 'tiny leaders_btn secondary button leaders_daily'>Daily Top Ten</a></li><li><a href='#' class = 'tiny leaders_btn button secondary leaders_all'>Overall Top Ten</a></li></ul></div>

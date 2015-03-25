@@ -20,7 +20,8 @@ function flickKick(){
 
 		totalKicks:0,
 		totalOver:0,
-		curScore:0
+		curScore:0,
+		curLevel:1
 
 	};
 
@@ -117,6 +118,8 @@ function flickKick(){
 	};
 
 	this.logoImageObj = new Image();
+
+	this.vodaObj = new Image();
 	
 
 	this.createGame = function(w,ht){
@@ -338,6 +341,11 @@ function flickKick(){
 	    context.fillStyle = grd4;
 
 	    context.fill();
+
+	    /* vodafone logo */
+	    //obj.vodaObj.src = 'img/voda.png';
+
+		//context.drawImage(obj.logoImageObj, 0, 0,10,10);
 
 	    /* post shadow */
 
@@ -637,7 +645,7 @@ function flickKick(){
 			var postDiff = obj.posts.screenRPost;
 		}
 
-		$.logThis("postDiff :> "+postDiff+" :: distanceFromCenterd :> "+distanceFromCenter);
+		//$.logThis("postDiff :> "+postDiff+" :: distanceFromCenterd :> "+distanceFromCenter);
 
 		if(distanceFromCenter < postDiff){
 
@@ -807,7 +815,7 @@ function flickKick(){
 
 		obj.score.totalKicks ++;
 
-		$.logThis("keick result");
+		//$.logThis("keick result");
 
 		var resTxt = "MISS!";
 
@@ -823,7 +831,7 @@ function flickKick(){
 
 		if(obj.level.alive){
 
-			$.logThis("alive :> "+obj.level.alive);
+			//$.logThis("alive :> "+obj.level.alive);
 
 			$("#result_container").fadeIn(200,function(){
 
@@ -871,13 +879,13 @@ function flickKick(){
 
 			}
 
-			$.logThis("# :> "+tokenHex);
+			//$.logThis("# :> "+tokenHex);
 
 			$('#score-percent .fi-star').css('color', tokenHex);
 
 		}else{
 
-			$.logThis("NOT alive :> "+obj.level.alive);
+			//$.logThis("NOT alive :> "+obj.level.alive);
 
 			$("#result_container").fadeIn(200,function(){
 
@@ -1070,8 +1078,10 @@ function flickKick(){
 	};
 
 	this.launchKick = function(ev){
+
+		$.logThis("inflight :> "+obj.inflight+" :: alive :> "+obj.level.alive);
 	
-		if(!obj.inflight){
+		if(!obj.inflight && obj.level.alive){
 
 			obj.inflight = true; 
 
@@ -1095,19 +1105,19 @@ function flickKick(){
 				gestureAngle = 90-gestureAngle;
 			} 
 
-			if(obj.world.curView == 1){
+			/*if(obj.world.curView == 1){
 
 			    if(gestureAngle > 40){
 					gestureAngle = 40;
 				}
 
-			}else{
+			}else{*/
 
-				if(gestureAngle > 40){
-					gestureAngle = 40;
+				if(gestureAngle > 60){
+					gestureAngle = 60;
 				}
 
-			}
+			/*}*/
 
 			
 
@@ -1230,9 +1240,9 @@ function flickKick(){
 
 			$('#time-secs').html("END");
 
-			$.logThis("alive end :> "+obj.level.alive);
+			//$.logThis("alive end :> "+obj.level.alive);
 
-			$.logThis("inflight :> "+obj.inflight);
+			//$.logThis("inflight :> "+obj.inflight);
 
 			if(!obj.inflight){
 
@@ -1240,8 +1250,6 @@ function flickKick(){
 
 			}
 
-			
-			
 
 		}
 
@@ -1330,16 +1338,46 @@ function flickKick(){
 
 			if(obj.level.levelScore < obj.level.parScore){
 
-				$("#endGame").html("<h2>TOO BAD!</h2><p>You got : "+obj.score.totalOver+"/"+obj.score.totalKicks+" <span class = 'score_multi'><i class='fi-star' id = 'score-star'></i> <small>x</small>"+multiplier+"</span><br />Level score: "+obj.level.levelScore+"<br />But you needed at least "+obj.level.parScore+" points to pass this level<br />You finished with "+obj.score.curScore+" total points</p><a href='#' class = 'btn share_btn'><img src='img/share_btn.png' alt=''/></a><a href='#' class = 'btn replay_btn'><img src='img/again_btn.png' alt=''/></a>");
+				$("#endGame").html("<h2>TOO BAD!</h2><p>You got : "+obj.score.totalOver+"/"+obj.score.totalKicks+" <span class = 'score_multi'><i class='fi-star' id = 'score-star'></i> <small>x</small>"+multiplier+"</span><br />Level score: "+obj.level.levelScore+"<br />But you needed at least "+obj.level.parScore+" points to pass level "+obj.score.curLevel+"<br />You finished with "+obj.score.curScore+" total points</p><div class = 'row large-8 medium-12 small-10 large-centered medium-centered small-centered column'><ul class= 'button-group radius even-2'><li><a href='#' class = 'btn share_btn button brag' data-reveal-id='shareModal'>Brag to ya mates</a></li><li><a href='#' class = 'btn replay_btn button'>play again <i class='fi-refresh'></i></a></li></ul></div><div class = 'row large-8 medium-12 small-10 large-centered medium-centered small-centered column'><ul class= 'button-group radius even-2 leaders_btns'><li><a href='#' class = 'tiny leaders_btn secondary button leaders_daily'>Daily<br />Top Ten</a></li><li><a href='#' class = 'tiny leaders_btn button secondary leaders_all'>Overall<br />Top Ten</a></li></ul></div>");
 
 				$('.score_multi').css('color',tokenHex);
 
 				loadNextStage("#stage4","#endGame");
 
+				$.post(
+
+					'includes/log_score.php',
+					
+					{
+
+						score:obj.score.curScore,
+						level:obj.score.curLevel,
+						nonce:nonce
+
+					},
+
+					function(data){
+
+						if(data.status){
+
+							$.logThis("successfull score save");
+
+						}else{
+
+							$.logThis("failed score save");
+
+						}
+
+					},
+
+					'json'
+
+				);
+
 
 			}else{
 
-				$("#level_screen").html("<h2>NICE!</h1><p>You got : "+obj.score.totalOver+"/"+obj.score.totalKicks+" <span class = 'score_multi'><i class='fi-star' id = 'score-star'></i> <small>x</small>"+multiplier+"</span><br />Level score: "+obj.level.levelScore+"<br />Total score: "+obj.score.curScore+"</p><a href='#' class = 'btn next_btn'><img src='img/next_btn.png' alt=''/></a>");
+				$("#level_screen").html("<h2>NICE!</h1><p>You got : "+obj.score.totalOver+"/"+obj.score.totalKicks+" <span class = 'score_multi'><i class='fi-star' id = 'score-star'></i> <small>x</small>"+multiplier+"</span><br />Level score: "+obj.level.levelScore+"<br />Total score: "+obj.score.curScore+"</p><a href='#' class = 'btn next_btn button'>Continue</a>");
 
 				$('.score_multi').css('color',tokenHex);
 
@@ -1391,15 +1429,48 @@ function flickKick(){
 
 			});
 
+			/*$('.leaders_all').on('click',function(){
+
+				$.post(
+
+					'includes/get_all_leaders.php',
+
+					{
+						nonce:nonce
+					},
+
+					function(data){
+
+						if(data.status){
+
+							$("#leaders_text").html(data.html);
+							$('#leadersModal').foundation('reveal', 'open');
+
+						}else{
+
+							$('#alert_text').html("<p>encounted an issue reconecting to the server please refresh your browser ERROR:06</p>");
+							$('#alertModal').foundation('reveal', 'open');
+
+						}
+
+					},
+
+					'json'
+
+				);
+
+			});*/
+
 	}
 
 	this.resetLevel = function(){
 
-		obj.level.alive = true;
+		
 
 		obj.level.levelScore = 0;
 		obj.level.curtime = 40;
 		obj.score.totalOver = 0;
+		obj.score.curLevel++;
 		obj.score.totalKicks = 0;
 		obj.ball.curFF = 0;
 		obj.ball.state = 0;
@@ -1442,20 +1513,23 @@ function flickKick(){
 
 		obj.drawWorld();
 
-		obj.runSkyTimer();
+		obj.level.alive = true;
+
+		//obj.runSkyTimer();
 
 
 	};
 
 	this.startAgain = function(){
 
-		obj.level.alive = true;
+		
 
 		obj.world.curView = 1;
 		obj.posts.sideDiff = 0;
 		obj.score.curScore = 0;
 		obj.world.windFactor = 0;
 		obj.ball.curWind = 0;
+		obj.score.curLevel = 1;
 
 		obj.level.levelScore = 0;
 		obj.level.curtime = 40;
@@ -1487,16 +1561,53 @@ function flickKick(){
 
 		//$(".total").hide();
 
-		loadNextStage("#endGame","#stage4");
 
-		obj.runTimer();
 
-		obj.wipeCanvas();
+		$.post(
 
-		obj.drawWorld();
+			'includes/log_play.php',
+			
+			{
 
-		obj.runSkyTimer();
+				avartar:players[playerTicker].name,
+				avartarId:playerTicker+1,
+				nonce:nonce
 
+			},
+
+			function(data){
+
+				if(data.status){
+
+					user.pid = data.play_id;
+
+					$.logThis("pid :> "+user.pid);
+
+					loadNextStage("#endGame","#stage4");
+
+					obj.runTimer();
+
+					obj.wipeCanvas();
+
+					obj.drawWorld();
+
+					obj.runSkyTimer();
+
+					obj.level.alive = true;
+
+
+				}else{
+
+					$('#alert_text').html("<p>encounted an issue reconecting to the server please refresh your browser ERROR:05</p>");
+					$('#alertModal').foundation('reveal', 'open');
+
+				}
+
+			},
+
+			'json'
+
+		);
 
 	};
 
