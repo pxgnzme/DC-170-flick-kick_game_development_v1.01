@@ -13,9 +13,9 @@ $cur_rank = 1;
 
 if($nonce == $_SESSION['nonce']){
 
-	$plays_table = "plays";
+	$plays_table = "user";
 
-	$plays_query = "SELECT * FROM $plays_table ORDER BY score DESC";
+	$plays_query = "SELECT * FROM $plays_table ORDER BY high_score DESC LIMIT $limit";
 	
 	$plays_res = mysql_query($plays_query);
 
@@ -29,29 +29,13 @@ if($nonce == $_SESSION['nonce']){
 
 			$play_row = mysql_fetch_array($plays_res);
 
-			if(!in_array($play_row['user_id'],$users) && $cur_rank <= $limit){
+			$leaders_html = $leaders_html."<tr>";
 
-				array_push($users,$play_row['user_id']);
+			$leaders_html = $leaders_html."<td class='leaders_rank text-center'>".$cur_rank."</td><td class = 'leaders_score text-center'>".$play_row['high_score']."</td><td class = 'leaders_name text-center'>".$play_row['name']."</td><td class = 'leaders_avartar text-center'><img src='img/player_0".$play_row['avartar_id'].".jpg' alt=''/></td>";
 
-				$leaders_html = $leaders_html."<tr>";
+			$leaders_html = $leaders_html."</tr>";
 
-				$user_table = "user";
-
-				$user_query = "SELECT * FROM $user_table WHERE id = '".$play_row['user_id']."'"; 
-
-				$user_res = mysql_query($user_query);
-
-				$user_row = mysql_fetch_array($user_res);
-
-				//$user_name = $user_row[]
-
-				$leaders_html = $leaders_html."<td class='leaders_rank text-center'>".$cur_rank."</td><td class = 'leaders_score text-center'>".$play_row['score']."</td><td class = 'leaders_name text-center'>".$user_row['name']."</td><td class = 'leaders_avartar text-center'><img src='img/player_0".$play_row['avartar_id'].".jpg' alt=''/></td>";
-
-				$leaders_html = $leaders_html."</tr>";
-
-				$cur_rank++;
-
-			}
+			$cur_rank++;
 
 		}
 

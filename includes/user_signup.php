@@ -8,6 +8,8 @@ parse_str($form_data);
 
 $today = time();
 
+$format_date = date('d/m/Y',$today);
+
 if($nonce == $_SESSION['nonce']){
 
 	$signup_table = "user";
@@ -37,10 +39,10 @@ if($nonce == $_SESSION['nonce']){
 
 			if(!empty($fb_id)){
 
-				$signup_query = "INSERT INTO $signup_table (date_signup, name, email, password, fb_id, newsletter) VALUES('$today', '$name_signup', '$email_signup', '$pword_signup', '$fb_id', '$newsletter')";
+				$signup_query = "INSERT INTO $signup_table (date_signup, name, email, password, fb_id, date_format) VALUES('$today', '$name_signup', '$email_signup', '$pword_signup', '$fb_id','$format_date')";
 			}else{
 
-				$signup_query = "INSERT INTO $signup_table (date_signup, name, email, password, newsletter) VALUES('$today', '$name_signup', '$email_signup', '$pword_signup', '$newsletter')";
+				$signup_query = "INSERT INTO $signup_table (date_signup, name, email, password, date_format) VALUES('$today', '$name_signup', '$email_signup', '$pword_signup','$format_date')";
 
 			}
 
@@ -52,7 +54,7 @@ if($nonce == $_SESSION['nonce']){
 
 				$_SESSION['user_id'] = $user_id;
 
-				die(json_encode(array("status"=>true, "user_id"=>$user_id, 'user_name'=>$name_signup, 'today'=>$today)));
+				die(json_encode(array("status"=>true, "user_id"=>$user_id, 'user_name'=>$name_signup, 'today'=>$today,'newsletter'=>$newsletter)));
 
 			}else{
 

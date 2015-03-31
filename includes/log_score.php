@@ -24,7 +24,46 @@ if($nonce == $_SESSION['nonce']){
 
 	if($score_res){
 
-		die(json_encode(array("status"=>true)));
+		$users_table = "user";
+
+		$userid = $_SESSION['user_id'];
+
+		$user_query = "SELECT * FROM $users_table WHERE id='$userid'";
+
+		$res_user = mysql_query($user_query);
+
+		if($res_user){
+
+			$user_row = mysql_fetch_array($res_user);
+
+			$update = "plays = plays+1, avartar_id='".$_SESSION['avartar_id']."'";
+
+			if($score > $user_row['high_score']){
+
+				$hs = $user_row['high_score'];
+
+				$update = $update.", high_score = '".$score."'";
+
+			}
+
+			$update_user = "UPDATE $users_table SET $update WHERE id = '$userid'";
+
+			$res_update = mysql_query($update_user);
+
+			if($res_update){
+
+				die(json_encode(array("status"=>true)));
+
+			}else{
+
+				die(json_encode(array("status"=>false, "error"=>"update error : @UPU")));
+
+			}
+
+		}else{
+
+			die(json_encode(array("status"=>false, "error"=>"update error : @USR")));
+		}
 
 	}else{
 

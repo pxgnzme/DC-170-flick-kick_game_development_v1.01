@@ -24,6 +24,7 @@ if($nonce == $_SESSION['nonce']){
 		$play_id = mysql_insert_id($db);
 
 		$_SESSION['play_id'] = $play_id;
+		$_SESSION['avartar_id'] = $avartarId;
 
 		die(json_encode(array("status"=>true, "play_id"=>$play_id)));
 

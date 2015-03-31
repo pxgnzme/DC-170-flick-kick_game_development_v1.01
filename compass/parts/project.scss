@@ -540,12 +540,121 @@ h2{
 	font-size: 1rem !important;
 }
 
-/*.leaders_btns{
+.joyride-tip-guide{
+	z-index: 1200;
+}
 
-	line-height: 2.5rem;
+#tutorial_container{
+	position:absolute;
+	width:100%;
+	height:100%;
+	background-color: rgba(255,255,255,0.3);
+	z-index: 2500;
+	top:0px;
+	display: none;
 
+	.tuts{
+
+		width:100%;
+		margin:0px;
+		position: absolute;
+		top:0px;
+
+		.tut_step{
+			display: none;
+			background-color: #000;
+			max-width: 300px;
+			padding:10px;
+
+			.tip_container{
+				width:90%;
+				position: absolute;
+				display: inline-block;
+
+				.tut_tip{
+					display:inline-block;
+					/*width:20px;
+					height:20px;*/
+					/*background-color: #000;*/
+
+					width: 0px; 
+					height: 0px; 
+					border-left: 10px solid transparent;
+					border-right: 10px solid transparent;
+					border-bottom: 10px solid #000;
+					
+
+				}
+			}
+
+			.tip_top{
+				top: -18px;
+				bottom:auto;
+			}
+
+			.tip_bottom{
+				bottom: -26px;
+				top:auto;
+
+				.tut_tip{
+					width: 0px; 
+					height: 0px; 
+					border-left: 10px solid transparent;
+					border-right: 10px solid transparent;
+					border-top: 10px solid #000;
+					border-bottom: 10px  solid transparent;
+				}
+			}
+
+			.tip_right{
+				text-align: right;
+				right:25px;
+			}
+
+			.tip_left{
+				text-align: left;
+				left:25px;
+			}
+
+			.tip_center{
+				text-align: center;
+				left:25px;
+			}
+
+			
+		}
+
+		.activeStep{
+			display:inline-block;
+		}
+	}
 	
+}
 
-}*/
+.level_2{
+	color:$multi1Hex;
+}
+.level_3{
+	color:$multi2Hex;
+}
+.level_4{
+	color:$multi3Hex;
+}
+.level_5{
+	color:$multi4Hex;
+}
 
+#rotate_warning{
+	position:absolute;
+	width:100%;
+	height:100%;
+	background-color: #000;
+	display: none;
+
+	h4{
+		color:#fff;
+		text-align: center;
+		font-size: 2.5rem;
+	}
+}
 

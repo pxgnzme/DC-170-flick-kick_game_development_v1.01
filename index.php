@@ -250,16 +250,11 @@ $detect = new Mobile_Detect;
 
               </div>
 
-              <div class="large-12 ">
+              <div class="large-12">
 
                 <label for="checkbox1">
                 <input id="checkbox1" class = "tnc" type="checkbox" required>
-                I have read the <a href="tnc" target="_blank">terms and conditions</a>
-                </label>
-
-                <label for="checkbox2">
-                <input id="checkbox2" type="checkbox" name="newsletter" class = "serial">
-                I would like to receive future information on the Warriors.
+                I have read the <a href="tnc.html" target="_blank">terms and conditions</a>
                 </label>
 
               </div>
@@ -423,13 +418,13 @@ $detect = new Mobile_Detect;
 
           <div class = "columns large-4 medium-4 small-4 text-center">
 
-            <span class= "avartar_container"><span class = "avartar"><img src="img/player_01.jpg" alt=""/></span></span>
+            <span class= "avartar_container"><span class = "avartar" id = 'game_avartar'><img src="img/player_01.jpg" alt=""/></span></span>
             
           </div>
 
           <div class = "columns large-4 medium-4 small-4 text-right">
 
-            <span class= "time score_board"><i class="fi-clock"></i> <span id= "time-secs">00</span></span>
+            <span class= "time score_board"><i class="fi-clock"></i> <span id= "time-secs">40</span></span>
             
           </div>
 
@@ -472,12 +467,68 @@ $detect = new Mobile_Detect;
 
     <section id = "endGame" class = "stage"></section>
 
-    
+    <div id = "tutorial_container">
 
+      <ul class = "tuts">
+
+        <li class = "tut_step activeStep" data-order="1" data-align="left" data-vert="top">
+
+          <p class= "tut_text">
+            
+            Kick tally<br />
+            100% <i class="fi-star level_5" ></i> = level score &#215;5<br />
+            90% <i class="fi-star level_4"></i> = level score &#215;4<br />
+            75% <i class="fi-star level_3"></i> = level score &#215;3<br />
+            50% <i class="fi-star level_2" ></i> = level score &#215;2
+
+          </p>
+
+          
+          <button class = "skip_tut tiny">Skip</button>
+          <button class = "next_tut tiny">Next</button>
+
+          <div class = "tip_container tip_top tip_left"><span class="tut_tip"></span></div>
+
+        </li>
+
+        <li class = "tut_step" data-order="2" data-align="right" data-vert="top">
+
+          <p class= "tut_text">Time left (secs)</p>
+
+          <button class = "skip_tut tiny">Skip</button>
+          <button class = "next_tut tiny">Next</button>
+
+          <div class = "tip_container tip_top tip_right"><span class="tut_tip"></span></div>
+
+        </li>
+
+        <li class = "tut_step" data-order="3" data-align="right" data-vert="bottom">
+
+          <p class= "tut_text">Wind direction and strength</p>
+
+          <button class = "skip_tut tiny">Skip</button>
+          <button class = "next_tut tiny">Next</button>
+
+          <div class = "tip_container tip_bottom tip_right"><span class="tut_tip"></span></div>
+
+        </li>
+
+        <li class = "tut_step" data-order="4" data-align="center" data-vert="center">
+
+          <p class= "tut_text">Kick controls:<br />Swipe your finger towards the posts to aim, the speed of the swipe determines the power</p>
+
+          <button class = "skip_tut tiny">Skip</button>
+          <button class = "next_tut tiny">Next</button>
+
+        </li>
+
+      </ul>
+
+    </div>
+    
     </div>
 
     <?php if ( !$detect->isMobile() ) {?>
-
 
     <div id="mobileModal" class="reveal-modal" data-reveal>
 
@@ -525,13 +576,31 @@ $detect = new Mobile_Detect;
       
       <a class="close-reveal-modal">&#215;</a>
       
-    </div>   
+    </div> 
 
+    <div id = "rotate_warning">
+
+      <h4>Please rotate your screen back to continue playing</h4>
+
+    </div>
+
+    
+  
     <!--  JAVASCRIPT -->
     <script src="http://hammerjs.github.io/dist/hammer.js"></script>
     <script>
 
-      $(document).foundation();
+    $(document).foundation(/*{
+      joyride: {
+        post_ride_callback : function () {
+          //alert('yay');
+          gameOb.launchTimer();
+        },
+        top:['top','left'],
+        left: ['right', 'top', 'bottom'],
+        right: ['left', 'top', 'bottom']
+      }
+    }*/);
 
     </script>
     <script src="js/custom.js?2"></script>
