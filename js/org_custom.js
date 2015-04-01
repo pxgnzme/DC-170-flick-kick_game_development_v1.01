@@ -172,6 +172,8 @@ function gameLoaded(){
 
 		selectedPlayer.src = players[playerTicker].src;
 
+		ga('send', 'event', 'game stats', 'player '+selectedPlayer.name, 1);
+
 
 		if(mobile){
 		
@@ -211,6 +213,7 @@ function gameLoaded(){
 					$('#leaders_header').html("TOP 10 OVERALL");
 					$("#leaders_text").html(data.html);
 					$('#leadersModal').foundation('reveal', 'open');
+					ga('send', 'event', 'game stats', 'view all leaders', 1);
 
 				}else{
 
@@ -246,6 +249,7 @@ function gameLoaded(){
 					$('#leaders_header').html("TOP 10 TODAY");
 					$("#leaders_text").html(data.html);
 					$('#leadersModal').foundation('reveal', 'open');
+					 ga('send', 'event', 'game stats', 'view daily leaders', 1);
 
 				}else{
 
@@ -274,6 +278,7 @@ function gameLoaded(){
 
 		}, function(response){
 
+			 ga('send', 'event', 'game stats', 'share fb', 1);
 
 		});
 
@@ -288,6 +293,8 @@ function gameLoaded(){
 		  if (response.status === 'connected') {
 		    //$.logThis("Logged into your app and Facebook.");
 
+		    ga('send', 'event', 'game stats', 'signup connect fb', 1);
+		    
 		    FB.api('/me', function(response) {
 
 		      $.logThis('logged in : Name :> ' + response.name + ' :: user email :> ' + response.email + " :: id :> "+response.id);
@@ -304,6 +311,7 @@ function gameLoaded(){
 
 		  } else if (response.status === 'not_authorized') {
 		    $.logThis("The person is logged into Facebook, but not your app.");
+		    ga('send', 'event', 'game stats', 'connect fb failed', 1);
 
 		  } else {
 		    $.logThis("The person is not logged into Facebook");
@@ -353,6 +361,8 @@ function gameLoaded(){
 							
 							loadNextStage("#loading","#stage3");
 							loadSelectionScreen(0);
+
+							ga('send', 'event', 'game stats', 'user login', 1);
 
 						}else{
 
@@ -850,7 +860,7 @@ jQuery.logThis = function(text){
   
    if((window['console'] !== undefined)){
      
-        console.log(text);
+        /*console.log(text);*/
     
    }
 

@@ -311,28 +311,11 @@ if(isset($_SESSION['admin'])){
 
                   <?php 
 
-                    $cur_day;
+                    for($i=0;$i<31;$i++){?>
 
-                    for($i=0;$i<$num_plays;$i++){
+                        <option value="<?=$i+1?>"><?=$i+1?></option>
 
-                      mysql_data_seek($res_date, $i);  
-
-                      $date_row = mysql_fetch_array($res_date);
-
-                      if($cur_day != $date_row['day']){?>
-
-                        <option value="<?=$date_row['day']?>"><?=$date_row['day']?></option>
-
-                      <?php 
-
-                      $cur_day = $date_row['day']; 
-
-                      }
-
-                    }
-
-                  ?>
-
+                    <?php }?>
 
                 </select>
 

@@ -166,6 +166,8 @@ function flickKick(){
 
 		$('#game_skin .avartar').html("<img src='img/"+selectedPlayer.src+"' alt='"+selectedPlayer.name+"' />");
 
+		ga('send', 'event', 'game stats', 'Game created', 1);
+	
 	};
 
 	//wipe canvas -- 
@@ -833,6 +835,8 @@ function flickKick(){
 
 		}
 
+		ga('send', 'event', 'game stats', resTxt, 1);
+
 		$('#result_container').html("<h2>"+resTxt+"</h2>");
 
 		if(obj.level.alive){
@@ -1032,6 +1036,9 @@ function flickKick(){
 		$.logThis("inflight :> "+obj.inflight+" :: alive :> "+obj.level.alive);
 	
 		if(!obj.inflight && obj.level.alive){
+
+
+			ga('send', 'event', 'game stats', 'kick', 1);
 
 			obj.inflight = true; 
 
@@ -1273,6 +1280,7 @@ function flickKick(){
 						if(data.status){
 
 							$.logThis("successfull score save");
+							ga('send', 'event', 'game stats', 'end game', 1);
 
 						}else{
 
@@ -1301,6 +1309,8 @@ function flickKick(){
 			$('.replay_btn').on('click',function(e){
 
 				e.preventDefault();
+
+				ga('send', 'event', 'game stats', 'replay', 1);
 
 				obj.startAgain();
 

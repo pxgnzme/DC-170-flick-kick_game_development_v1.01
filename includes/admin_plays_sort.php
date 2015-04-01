@@ -70,7 +70,11 @@ if($res_plays){
 
 }
 
-echo "date sort str :> ".$date_sort." :: day :> ".$day*100;
+if($num_plays < 1){
+
+  echo "No records for today";
+
+}else{
 
 for($i=0;$i<$num_plays;$i++){ 
   $play_row = mysql_fetch_array($res_plays);?>
@@ -86,6 +90,6 @@ for($i=0;$i<$num_plays;$i++){
 
 </tr>
 
-<?php } ?>
+<?php }} ?>
 
          
