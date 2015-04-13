@@ -41,6 +41,11 @@ $detect = new Mobile_Detect;
     <meta property="og:image:width" content="600">
     <meta property="og:image:height" content="600">
 
+    <!-- icon in the highest resolution we need it for -->
+    <link rel="icon" sizes="228x228" href="img/home_icon.png">
+    <!-- reuse same icon for Safari -->
+    <link rel="apple-touch-icon" href="img/home_icon.png">
+
     <meta property="fb:app_id" content="837218189705277">
 
     <title>Warriors flick kick</title>
